@@ -9,6 +9,7 @@ const CustomerContext = createContext({
   setSelectedCustomer: (customer: null | CustomerType) => {},
   addCustomer: (data: CustomerAddType) => {},
   editCustomer: (data: CustomerType) => {},
+  deleteCustomer: (id: number) => {},
 })
 
 function getCustomers(): CustomerType[] {
@@ -52,6 +53,13 @@ function CustomerProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('customers', JSON.stringify(updatedCustomers))
   }
 
+  const deleteCustomer = (id: number) => {
+    const updatedCustomers = customers.filter(customer => customer.id !== id)
+    setCustomers(updatedCustomers)
+    // Update localStorage with new customer list
+    localStorage.setItem('customers', JSON.stringify(updatedCustomers))
+  }
+
   return (
     <CustomerContext.Provider
       value={{
@@ -60,6 +68,7 @@ function CustomerProvider({ children }: { children: React.ReactNode }) {
         editCustomer,
         selectedCustomer,
         setSelectedCustomer,
+        deleteCustomer,
       }}>
       {children}
     </CustomerContext.Provider>

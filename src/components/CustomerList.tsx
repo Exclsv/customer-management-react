@@ -19,7 +19,8 @@ import {
 } from './ui/pagination'
 
 export default function CustomerList() {
-  const { customers, selectedCustomer, setSelectedCustomer } = useCustomers()
+  const { customers, selectedCustomer, setSelectedCustomer, deleteCustomer } =
+    useCustomers()
 
   // ^ Pagination
   const pageSize = 10
@@ -40,6 +41,10 @@ export default function CustomerList() {
     } else {
       setSelectedCustomer(null)
     }
+  }
+
+  function handleDeleteCustomer(id: number) {
+    deleteCustomer(id)
   }
 
   return (
@@ -85,7 +90,9 @@ export default function CustomerList() {
                   onClick={() => handleSelectCustomer(item.id)}>
                   <img src='/src/assets/Edit.svg' className='w-full' />
                 </Button>
-                <Button className='bg-transparent p-0 hover:bg-transparent'>
+                <Button
+                  className='bg-transparent p-0 hover:bg-transparent'
+                  onClick={() => handleDeleteCustomer(item.id)}>
                   <img src='/src/assets/Trash.svg' className='w-full' />
                 </Button>
               </TableCell>
@@ -108,7 +115,9 @@ export default function CustomerList() {
             const page = currentPage + index - 1
             return page > 0 && page <= totalPages ? (
               <PaginationItem key={page}>
-                <PaginationLink onClick={() => setCurrentPage(page)} isActive={page === currentPage}>
+                <PaginationLink
+                  onClick={() => setCurrentPage(page)}
+                  isActive={page === currentPage}>
                   {page}
                 </PaginationLink>
               </PaginationItem>
